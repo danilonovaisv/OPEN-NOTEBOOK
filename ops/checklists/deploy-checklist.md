@@ -10,6 +10,7 @@
 - [ ] Domínio definido
 - [ ] TLS definido
 - [ ] Autenticação definida
+- [ ] Firewall (UFW) configurado para bloquear portas 8000 e 5055 do público, expondo apenas 80/443
 - [ ] Custos estimados
 
 ## Plataforma

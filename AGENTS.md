@@ -73,3 +73,12 @@ Nunca execute sem aprovação explícita:
 - Nunca commite volumes, banco local, arquivos de notebook ou modelos locais.
 - Use apenas placeholders em exemplos.
 - Antes de qualquer deploy público, validar autenticação, TLS, backup e logs.
+
+## Documentação Operacional Adicional
+
+Para auditorias e validações avançadas do Web App e interfaces de IA, consulte:
+- [.context/webapp-audit-flow.md](file:///.context/webapp-audit-flow.md) — Fluxo de auditoria detalhado e mapeamento de stack e contratos.
+- [.context/agent-handoff-frontend-engineer.md](file:///.context/agent-handoff-frontend-engineer.md) — Diretrizes de handoff para a role de Frontend Engineer.
+- [ops/prompts/audit-and-fix-webapp.md](file:///ops/prompts/audit-and-fix-webapp.md) — Prompt instrucional pronto para novos agents.
+- [ops/checklists/webapp-validation-checklist.md](file:///ops/checklists/webapp-validation-checklist.md) — Checklist de conformidade e validação em alterações.
+

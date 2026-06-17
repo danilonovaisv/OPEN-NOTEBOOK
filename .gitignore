@@ -5,6 +5,9 @@ data/
 .uploads/
 sqlite-db/
 surreal-data/
+surreal_data/
+surreal_single_data/
+ollama_models/
 docker.env
 notebook_data/
 # Python-specific

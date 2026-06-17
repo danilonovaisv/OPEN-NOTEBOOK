@@ -7,8 +7,9 @@
 - [ ] Git disponível no terminal
 - [ ] Repositório clonado
 - [ ] `docker-compose.yml` presente
-- [ ] `OPEN_NOTEBOOK_ENCRYPTION_KEY` alterada
-- [ ] Nenhum segredo salvo em Git
+- [ ] `.env` criado a partir de `.env.example` com chaves customizadas
+- [ ] `OPEN_NOTEBOOK_ENCRYPTION_KEY` alterada no arquivo `.env`
+- [ ] Nenhum segredo salvo no Git ou no `docker-compose.yml`
 
 ## Validação
 
