@@ -75,6 +75,10 @@ async function fetchConfig(): Promise<AppConfig> {
     })
     if (runtimeResponse.ok) {
       const runtimeData = await runtimeResponse.json()
+      // Deployment platform signaled a config error (e.g. Vercel without API_URL set)
+      if (runtimeData.configError) {
+        throw new Error(runtimeData.configError)
+      }
       runtimeApiUrl = runtimeData.apiUrl
       // Treat empty string as "not set" to allow fallback to env var or default
       if (runtimeApiUrl === '') {

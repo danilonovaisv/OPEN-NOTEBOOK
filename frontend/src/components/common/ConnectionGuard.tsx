@@ -52,8 +52,9 @@ export function ConnectionGuard({ children }: ConnectionGuardProps) {
       isCheckingRef.current = false
       setIsChecking(false)
     } catch (err) {
-      // API is unreachable
+      // API is unreachable or misconfigured
       const errorMessage = err instanceof Error ? err.message : 'Unknown error'
+      // Note: attemptedUrl is a hint — the actual URL tried is in errorMessage when config fails
       const attemptedUrl =
         typeof window !== 'undefined'
           ? `${window.location.origin}/api/config`
@@ -62,8 +63,8 @@ export function ConnectionGuard({ children }: ConnectionGuardProps) {
       const apiError: ConnectionError = {
         type: 'api-unreachable',
         details: {
-          message: 'Unable to connect to API', // Fallback message
-          technicalMessage: errorMessage,
+          message: errorMessage, // Use actual error (may include Vercel config instructions)
+          technicalMessage: err instanceof Error && err.stack ? errorMessage : undefined,
           stack: err instanceof Error ? err.stack : undefined,
           attemptedUrl,
         },
