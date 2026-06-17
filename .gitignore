@@ -145,3 +145,5 @@ specs/
 .harness/
 
 .mcp.json
+.vercel
+.env*
