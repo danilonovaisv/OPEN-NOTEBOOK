@@ -32,7 +32,18 @@ export async function GET(request: NextRequest) {
     })
   }
 
-  // Priority 2: Auto-detect from request headers
+  // Priority 2: On Vercel, auto-detection is invalid — no FastAPI runs on Vercel servers.
+  // Require explicit API_URL when deployed to Vercel.
+  if (process.env.VERCEL === '1') {
+    console.error('[runtime-config] Vercel deployment detected but API_URL is not set. Set API_URL in Vercel project environment variables pointing to your FastAPI backend (e.g. https://your-api.railway.app).')
+    return NextResponse.json({
+      apiUrl: '',
+      configError: 'API_URL environment variable is not set. Open your Vercel project → Settings → Environment Variables and add API_URL pointing to your FastAPI backend (e.g. https://your-api.railway.app or http://your-vps-ip:5055).',
+    })
+  }
+
+  // Priority 3: Auto-detect from request headers (Docker/VPS deployments only)
+  // Assumes FastAPI runs on port 5055 on the same host as the Next.js server.
   try {
     // Get the protocol (http or https)
     // Check X-Forwarded-Proto first (for reverse proxies), then fallback to request scheme
@@ -60,7 +71,7 @@ export async function GET(request: NextRequest) {
     console.error('[runtime-config] Auto-detection failed:', error)
   }
 
-  // Priority 3: Fallback to localhost
+  // Priority 4: Fallback to localhost
   console.log('[runtime-config] Using fallback: http://localhost:5055')
   return NextResponse.json({
     apiUrl: 'http://localhost:5055',
