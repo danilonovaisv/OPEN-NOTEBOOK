@@ -82,3 +82,11 @@ Para auditorias e validações avançadas do Web App e interfaces de IA, consult
 - [ops/prompts/audit-and-fix-webapp.md](file:///ops/prompts/audit-and-fix-webapp.md) — Prompt instrucional pronto para novos agents.
 - [ops/checklists/webapp-validation-checklist.md](file:///ops/checklists/webapp-validation-checklist.md) — Checklist de conformidade e validação em alterações.
 
+## Arquitetura Agentic (Cognitive Layer)
+
+Este repositório possui uma infraestrutura "Agent-First" mapeada no diretório `.agent/`:
+- **Skills (`.agent/skills/`)**: Habilidades especializadas para uso de ferramentas e workflows (Docker, Next.js, LangChain, SurrealDB).
+- **Workflows (`.agent/workflows/`)**: Fluxos de trabalho mapeados para comandos (ex: `/test`, `/deploy`, `/lint`).
+- **Personas (`.agent/agents/`)**: Agentes especialistas (Swarm) disponíveis para delegação.
+- **MCP (`.agent/mcp.json`)**: Configurações de Model Context Protocol para leitura externa.
+Consulte essas pastas para automatizar as execuções de forma inteligente.

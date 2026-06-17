@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "github-mcp-server": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "<COLOQUE_SEU_TOKEN_AQUI>"
+      }
+    },
+    "surrealdb-mcp": {
+      "command": "npx",
+      "args": ["-y", "mcp-sql-server", "--url", "http://root:root@localhost:8000/sql", "--namespace", "open_notebook", "--database", "open_notebook"],
+      "description": "Utilização experimental de ferramenta genérica SQL ou similar para acesso ao DB em tempo real"
+    },
+    "docker-mcp": {
+      "command": "docker-mcp",
+      "args": [],
+      "description": "Servidor para monitorar estado dos containers na máquina do host."
+    }
+  }
+}
