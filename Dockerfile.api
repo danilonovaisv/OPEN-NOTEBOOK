@@ -1,0 +1,58 @@
+# API-only Dockerfile for Railway deployment
+# Runs FastAPI backend + surreal-commands-worker (no Next.js frontend)
+FROM python:3.12-slim-bookworm AS builder
+
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV MAKEFLAGS="-j$(nproc)"
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV UV_COMPILE_BYTECODE=1
+ENV UV_LINK_MODE=copy
+
+WORKDIR /app
+
+COPY pyproject.toml uv.lock ./
+COPY open_notebook/__init__.py ./open_notebook/__init__.py
+
+RUN uv sync --frozen --no-dev
+
+ENV TIKTOKEN_CACHE_DIR=/app/tiktoken-cache
+RUN mkdir -p /app/tiktoken-cache && \
+    .venv/bin/python -c "import tiktoken; tiktoken.get_encoding('o200k_base')"
+
+COPY . /app
+
+# Runtime stage
+FROM python:3.12-slim-bookworm AS runtime
+
+RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
+    ffmpeg \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
+WORKDIR /app
+
+COPY --from=builder /app/.venv /app/.venv
+COPY --from=builder /app/tiktoken-cache /app/tiktoken-cache
+COPY . /app
+
+ENV UV_NO_SYNC=1
+ENV VIRTUAL_ENV=/app/.venv
+ENV TIKTOKEN_CACHE_DIR=/app/tiktoken-cache
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+RUN mkdir -p /app/data
+
+EXPOSE 5055
+
+# Railway injects $PORT; fall back to 5055 for local runs
+CMD ["sh", "-c", "uv run --no-sync uvicorn api.main:app --host 0.0.0.0 --port ${PORT:-5055} & uv run --no-sync surreal-commands-worker --import-modules commands & wait"]
