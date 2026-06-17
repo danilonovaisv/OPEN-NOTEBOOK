@@ -1,0 +1,10 @@
+# Exemplo de entradas para proteger dados locais
+.env
+.env.local
+notebook_data/
+surreal_data/
+ollama_models/
+*.db
+*.sqlite
+*.sqlite3
+.DS_Store
