@@ -147,3 +147,4 @@ specs/
 .mcp.json
 .vercel
 .env*
+mcp_config.json
