@@ -1,5 +1,3 @@
-FROM surrealdb/surrealdb:v2 AS surreal
-FROM ubuntu:22.04
-COPY --from=surreal /surreal /surreal
-RUN chmod 755 /surreal
+FROM surrealdb/surrealdb:v2
+USER root
 ENTRYPOINT ["/surreal"]
