@@ -1,3 +1,12 @@
-FROM surrealdb/surrealdb:v2
-USER root
-ENTRYPOINT ["/surreal"]
+FROM surrealdb/surrealdb:v2 AS surreal
+
+FROM debian:bookworm-slim
+RUN apt-get update && apt-get install -y \
+    ca-certificates \
+    libstdc++6 \
+    libgcc-s1 \
+    && rm -rf /var/lib/apt/lists/*
+COPY --from=surreal /surreal /usr/local/bin/surreal
+RUN mkdir -p /data
+EXPOSE 8000
+CMD surreal start --log info --bind 0.0.0.0:8000 --username "${SURREAL_USER}" --password "${SURREAL_PASSWORD}" rocksdb:///data/database.db
